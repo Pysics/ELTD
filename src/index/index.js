@@ -9,10 +9,10 @@ import { addNavigationHelpers } from 'react-navigation'
 //Redux
 import { connect } from 'react-redux'
 
-import { NavBar } from './navbar'
+import NavBar from './navbar'
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return {
     navigationState: state.navBar
   }
@@ -27,7 +27,7 @@ class Index extends React.Component {
         navigation={
           addNavigationHelpers({
             dispatch: dispatch,
-            state: navigationState,
+            state: navigationState
           })
         }
       />
@@ -35,4 +35,5 @@ class Index extends React.Component {
   }
 }
 
+// 配色有问题
 export default connect(mapStateToProps)(Index)

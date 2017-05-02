@@ -4,9 +4,9 @@
 import React from 'react'
 // Redux
 import { Provider } from 'react-redux'
-import store from './store'
+import store from './store/index'
 // Navigation
-import Index from './index'
+import Index from './index/index'
 
 export default class App extends React.Component {
   render(){
