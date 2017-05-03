@@ -1,0 +1,7 @@
+// Created by Pysics on 2017.5.3
+
+'use strict'
+
+export const FETCH_ETC_DATA_REQUEST = "FETCH_ETC_DATA_REQUEST"
+export const FETCH_ETC_DATA_SUCCESS = "FETCH_ETC_DATA_SUCCESS"
+export const FETCH_ETC_DATA_FAILURE = "FETCH_ETC_DATA_FAILURE"
