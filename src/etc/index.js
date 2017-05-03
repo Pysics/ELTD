@@ -8,8 +8,6 @@ import { View, Button, TouchableWithoutFeedback, StyleSheet, Image, Text } from 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import * as Actions from '../actions/requestETCData'
-
 class ETCScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
@@ -19,7 +17,11 @@ class ETCScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchData();
+    const { dispatch } = this.props;
+    // 注意dispatch的格式，参数为对象而不是字符串
+    dispatch({type: 'FETCH_ETC_DATA_REQUEST'})
+    // console.log(this.props);
+    
   }
   
 
@@ -41,12 +43,6 @@ const mapStateToProps = (state) => {
     fetchTime: state.ETCDataState.fetchTime
   };
 };
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(Actions, dispatch)
-  }
-}
 
 const styles = StyleSheet.create({
   headerRightContainer: {
@@ -81,4 +77,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ETCScreen)
+// 不传递mapDispatchToProps则默认会传递一个dispatch参数，用来手动触发action
+export default connect(mapStateToProps)(ETCScreen)

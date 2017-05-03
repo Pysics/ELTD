@@ -13,6 +13,9 @@ const initialState = {
 }
 
 export default function ETCDataState(state=initialState, action) {
+  // console.log('------------------------');
+  // console.log(action);
+  
   switch (action.type) {
     case types.FETCH_ETC_DATA_REQUEST:
       return Object.assign({}, state, {
