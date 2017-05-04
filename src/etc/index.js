@@ -8,6 +8,8 @@ import { View, Button, TouchableWithoutFeedback, StyleSheet, Image, Text } from 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import CardBlock from './cardBlock'
+
 class ETCScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
@@ -26,11 +28,43 @@ class ETCScreen extends React.Component {
   
 
   render() {
-    console.log(this.props);
-    
+    const { hasData, data } = this.props;
+
     return (
-      <Text>111</Text>
-    );
+        <View style={styles.body}>
+          <View style={styles.userInfo}>
+            { hasData ?
+              <View style={styles.dataContainer}>
+                <Image
+                  source={{
+                    uri: data.avatar_url
+                  }}
+                  style={styles.avatar}
+                />
+                <Text style={styles.phone}>{data.phone_number}</Text>
+              </View>
+                :
+              <View />
+            }
+          </View>
+          <View style={styles.cardInfo}>
+            { hasData ?
+              <View style={styles.cardConatiner}>
+                {data.card_summary.map((item, idx) => 
+                  <CardBlock
+                    data={item}
+                    key={idx}
+                    style={styles.card}  
+                  />
+                )}
+              </View>
+              :
+              <View>
+              </View>
+            }
+          </View>
+        </View>
+    )
   }
 }
 
@@ -45,35 +79,40 @@ const mapStateToProps = (state) => {
 };
 
 const styles = StyleSheet.create({
-  headerRightContainer: {
-    borderWidth: 1,
-    borderColor: 'red'
-  },
   body: {
-    flex: 1
-  },
-  top: {
-    flex: 1
-  },
-  bottom: {
-    flex: 2
-  },
-  topImg: {
     flex: 1,
-    width: '100%'
   },
-  bottomImg: {
+  userInfo: {
     flex: 1,
-    width: '100%'
+    backgroundColor: 'rgb(214, 246, 166)',
   },
-  etc: {
-    width: '40%',
-    height: '25%',
-    left: '30%',
-    position: 'absolute',
-    bottom: 0,
-    borderWidth: 1,
-    borderColor: 'red',
+  cardInfo: {
+    flex: 2.2,
+  },
+  dataContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+  },
+  phone: {
+    color: '#222',
+    fontSize: 22,
+    marginTop: 7,
+  },
+  cardConatiner: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 0,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  card: {
+    flex: 1,
   }
 });
 

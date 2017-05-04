@@ -1,0 +1,130 @@
+{
+  "user_name": "小明",
+  "avatar_url": "https://avatars2.githubusercontent.com/u/1147375?v=3&s=120",
+  "phone_number": "153xxxx0123",
+  "card_summary": [{
+    "title": "消费总金额",
+    "summary_all": "12000",
+    "tab1": {
+      "desc": "储蓄卡消费明细",
+      "summary_each": "5000",
+      "cards": [{
+          "card1": "a1"
+        },
+        {
+          "card2": "a2"
+        },
+        {
+          "card3": "a3"
+        }
+      ]
+    },
+    "tab2": {
+      "desc": "记账卡消费明细",
+      "summary_each": "7000",
+      "cards": [{
+          "card1": "b1"
+        },
+        {
+          "card2": "b2"
+        },
+        {
+          "card3": "b3"
+        }
+      ]
+    }
+  }, {
+    "title": "圈存/还款总金额",
+    "summary_all": "13000",
+        "tab1": {
+      "desc": "储蓄卡消费明细",
+      "summary_each": "5000",
+      "cards": [{
+          "card1": "a1"
+        },
+        {
+          "card2": "a2"
+        },
+        {
+          "card3": "a3"
+        }
+      ]
+    },
+    "tab2": {
+      "desc": "记账卡消费明细",
+      "summary_each": "7000",
+      "cards": [{
+          "card1": "b1"
+        },
+        {
+          "card2": "b2"
+        },
+        {
+          "card3": "b3"
+        }
+      ]
+    }
+  }, {
+    "title": "我的账单",
+    "summary_all": "1000",
+        "tab1": {
+      "desc": "储蓄卡消费明细",
+      "summary_each": "5000",
+      "cards": [{
+          "card1": "a1"
+        },
+        {
+          "card2": "a2"
+        },
+        {
+          "card3": "a3"
+        }
+      ]
+    },
+    "tab2": {
+      "desc": "记账卡消费明细",
+      "summary_each": "7000",
+      "cards": [{
+          "card1": "b1"
+        },
+        {
+          "card2": "b2"
+        },
+        {
+          "card3": "b3"
+        }
+      ]
+    }
+  }, {
+    "title": "我的卡片",
+    "summary_all": "19000",
+        "tab1": {
+      "desc": "储蓄卡消费明细",
+      "summary_each": "5000",
+      "cards": [{
+          "card1": "a1"
+        },
+        {
+          "card2": "a2"
+        },
+        {
+          "card3": "a3"
+        }
+      ]
+    },
+    "tab2": {
+      "desc": "记账卡消费明细",
+      "summary_each": "7000",
+      "cards": [{
+          "card1": "b1"
+        },
+        {
+          "card2": "b2"
+        },
+        {
+          "card3": "b3"
+        }
+      ]
+    }
+  }]
+}

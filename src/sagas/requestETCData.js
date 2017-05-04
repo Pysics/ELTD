@@ -45,7 +45,7 @@ const fetchAPI = {
     return fetch(fetchUrl.etc)
     .then(response => response.json())
     .then(data => {
-         return data
+      return data
      })
     .catch(error => error)
   }
@@ -65,10 +65,9 @@ const fetchAPI = {
 function* fetchUser() {
   try {
     const response = yield call( fetchAPI.fetchETC );
+    // 或者
+    // const response = yield call( fetch, fetchUrl );
 
-    console.log('--------');
-    console.log(response);
-    
     yield put( receiveData(response) );
   } catch (error) {
     yield put(fetchFailure());
