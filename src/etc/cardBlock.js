@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, PanResponder } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Image, PanResponder, Animated } from 'react-native'
 
 
 class CardBlock extends Component {
@@ -7,7 +7,7 @@ class CardBlock extends Component {
     super(props);
     this.state = {
       left: 0,
-      isTouch: false
+      isTouch: false,
     }
 
     this._left = 0;
@@ -30,9 +30,6 @@ class CardBlock extends Component {
         this._left = this.state.left
         this.setState({isTouch: true})
         this._touchSpace = this._containerWidth - this._touchBlockInfo.width
-
-        console.log(this._touchSpace);
-        
       },
       onPanResponderMove: (evt, gs)=>{
         // 每次移动dx从0记起
@@ -55,6 +52,8 @@ class CardBlock extends Component {
           })
         }
 
+        // 避免滑块拉到最右边时，_step值很大，再向左移动滑块时步进很大，发生瞬移
+        // 滑块拉到中间时保存的步进会用滑块自动归位处理
         if (this._left === 0 || this._left === this._touchSpace) {
           this._step = 0
         } else {
@@ -64,25 +63,36 @@ class CardBlock extends Component {
         
       },
       onPanResponderRelease: (evt,gs)=>{
+
+        // 设定个中间值决定滑块最终移向哪边
+        const middleValue = (this._containerWidth - this._touchBlockInfo.width) / 2
+        
+        if (this._left <= middleValue) {
+          this._left = 0
+          this._step = 0
+        } else {
+          this._left = this._touchSpace
+          this._step = 0
+        }
         this.setState({
+          left: this._left,
           isTouch: false
-      })}
-    })
-  }
+      })
+    }
+  })
+}
 
-  
+  // _touchIn() {
+  //   this.setState({
+  //     isTouch: true,
+  //   })
+  // }
 
-  _touchIn() {
-    this.setState({
-      isTouch: true,
-    })
-  }
-
-  _touchOut() {
-    this.setState({
-      isTouch: false,
-    })
-  }
+  // _touchOut() {
+  //   this.setState({
+  //     isTouch: false,
+  //   })
+  // }
 
   render() {
     const data = this.props.data;
@@ -97,9 +107,13 @@ class CardBlock extends Component {
           onPressIn={this._touchIn.bind(this)}
           onPressOut={this._touchOut.bind(this)}
         >*/}
-          <View
-            style={[ styles.touchContainer, {left: this.state.left}] }
-            elevation={1}
+          <Animated.View
+            style={[
+              styles.touchContainer,
+              {
+                left: this.state.left,
+              }
+              ]}
             onLayout={ (e) => {this._touchBlockInfo = e.nativeEvent.layout} }
             {...this._panResponder.panHandlers}
           >
@@ -112,7 +126,7 @@ class CardBlock extends Component {
               <Text style={styles.summary_all}>{data.summary_all}元</Text>
             </View>
             {/*touchContainer end*/}
-          </View>
+          </Animated.View>
         {/*</TouchableOpacity>*/}
 
         <View style={styles.cardInfo, {opacity: this.state.isTouch ? 0.5 : 1,}}>
@@ -162,6 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    elevation: 2
     // shadowColor: 'black',
     // shadowRadius: 2,
     // shadowOpacity: 1,

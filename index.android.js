@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import App from './src/index'
+// import App from './test/animation'
 
 
 AppRegistry.registerComponent('ELTD', () => App);
