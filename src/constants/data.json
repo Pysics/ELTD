@@ -36,8 +36,8 @@
   }, {
     "title": "圈存/还款总金额",
     "summary_all": "13000",
-        "tab1": {
-      "desc": "储蓄卡消费明细",
+    "tab1": {
+      "desc": "储蓄卡圈存明细",
       "summary_each": "5000",
       "cards": [{
           "card1": "a1"
@@ -51,7 +51,7 @@
       ]
     },
     "tab2": {
-      "desc": "记账卡消费明细",
+      "desc": "记账卡还款明细",
       "summary_each": "7000",
       "cards": [{
           "card1": "b1"
@@ -67,8 +67,8 @@
   }, {
     "title": "我的账单",
     "summary_all": "1000",
-        "tab1": {
-      "desc": "储蓄卡消费明细",
+    "tab1": {
+      "desc": "未还款",
       "summary_each": "5000",
       "cards": [{
           "card1": "a1"
@@ -82,7 +82,7 @@
       ]
     },
     "tab2": {
-      "desc": "记账卡消费明细",
+      "desc": "已还款",
       "summary_each": "7000",
       "cards": [{
           "card1": "b1"
@@ -98,8 +98,8 @@
   }, {
     "title": "我的卡片",
     "summary_all": "19000",
-        "tab1": {
-      "desc": "储蓄卡消费明细",
+    "tab1": {
+      "desc": "储蓄卡",
       "summary_each": "5000",
       "cards": [{
           "card1": "a1"
@@ -113,7 +113,7 @@
       ]
     },
     "tab2": {
-      "desc": "记账卡消费明细",
+      "desc": "记账卡",
       "summary_each": "7000",
       "cards": [{
           "card1": "b1"

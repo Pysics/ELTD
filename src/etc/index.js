@@ -54,6 +54,7 @@ class ETCScreen extends React.Component {
                   <CardBlock
                     data={item}
                     key={idx}
+                    idx={idx}
                     style={styles.card}  
                   />
                 )}
