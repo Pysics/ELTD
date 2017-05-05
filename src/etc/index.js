@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   cardConatiner: {
+    overflow: 'hidden',
     flex: 1,
     marginTop: 20,
     marginBottom: 0,

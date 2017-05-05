@@ -12,87 +12,115 @@ class CardBlock extends Component {
 
     this._left = 0;
     this._containerWidth = null;
-    this._touchBlockInfo = null;
+    this._touchBlockWidth = null;
 
     // 滑动块剩余的空间
-    this._touchSpace = null;
+    // this._touchSpace = null;
 
     // gs.dx的步进
-    this._step = 0;
-    this._panResponder = null;
+    // this._step = 0;
+    // this._panResponder = null;
+
+    this._blockInLeft = true;
+
+    // 不允许双击事件发生
+    this._touchTimeStamp = null;
   }
 
- componentWillMount(){
+  componentWillMount() {
+    this._animatedValue = new Animated.ValueXY()
+    this._value = {x: 0}
+    this._animatedValue.addListener((value) => this._value = value);
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: ()=> true,
-      onPanResponderGrant: ()=>{
-        this._left = this.state.left
-        this.setState({isTouch: true})
-        this._touchSpace = this._containerWidth - this._touchBlockInfo.width
-      },
-      onPanResponderMove: (evt, gs)=>{
-        // 每次移动dx从0记起
-        // 按住按钮不动时,dx的值是累加的,即 1, 2, 3, 4, 5这样,但每次left不应该把每一步的值都加上,只需要加相邻两步的差值
-        // console.log(gs.dx);
-        
-        // console.log(this._left);
-        
-        if ( this._left>=0 && this._touchBlockInfo.x>=0 && this._left <= this._touchSpace && this._touchBlockInfo.x <= this._touchSpace ) {
-          this._left += (gs.dx - this._step)
-          
-          // _left值小于0时使其为0贴边
-          if (this._left < 0) {
-            this._left = 0
-          } else if (this._left > this._touchSpace) {
-            this._left = this._touchSpace
-          }
-          this.setState({
-            left: this._left
-          })
-        }
-
-        // 避免滑块拉到最右边时，_step值很大，再向左移动滑块时步进很大，发生瞬移
-        // 滑块拉到中间时保存的步进会用滑块自动归位处理
-        if (this._left === 0 || this._left === this._touchSpace) {
-          this._step = 0
-        } else {
-          // 将本次dx值赋予_step
-          this._step = gs.dx
-        }
-        
-      },
-      onPanResponderRelease: (evt,gs)=>{
-
-        // 设定个中间值决定滑块最终移向哪边
-        const middleValue = (this._containerWidth - this._touchBlockInfo.width) / 2
-        
-        if (this._left <= middleValue) {
-          this._left = 0
-          this._step = 0
-        } else {
-          this._left = this._touchSpace
-          this._step = 0
-        }
-        this.setState({
-          left: this._left,
-          isTouch: false
-      })
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
+      onPanResponderGrant: this._handlePanResponderGrant.bind(this),
+      onPanResponderMove: this._handlePanResponderMove.bind(this),
+      onPanResponderRelease: this._handlePanResponderEnd.bind(this),
+      onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
+      });
+  }
+  _handleStartShouldSetPanResponder(e, gestureState){
+    // 与上次点击在500ms以内时不处理点击事件
+    const tick = new Date().getTime();
+    if (tick - this._touchTimeStamp < 500) {
+      return false;
     }
-  })
-}
+    this._touchTimeStamp = tick;
+    return true;
+  }
+  _handleMoveShouldSetPanResponder(e, gestureState){
+    return true;
+  }
+  _handlePanResponderGrant(e, gestureState){
+    this._animatedValue.setOffset({x: this._value.x});
+    this._animatedValue.setValue({x: 0});
+  }
 
-  // _touchIn() {
-  //   this.setState({
-  //     isTouch: true,
-  //   })
-  // }
+  _handlePanResponderMove(e, gestureState) {
+    // console.log(this._animatedValue.x);
+    
+    let canTouchLength = this._containerWidth - this._touchBlockWidth
+    
+    // 在边界处不可向己边滑动
+    if ( (this._blockInLeft && gestureState.dx > 0 && gestureState.dx < canTouchLength) || (!this._blockInLeft && gestureState.dx < 0 && gestureState.dx > -canTouchLength) ) {
+      this._animatedValue.setValue({x: gestureState.dx})
+    }
+    
+    // Animated.event([
+    //     null, {dx: this._animatedValue.x}
+    // ])
+  }
 
-  // _touchOut() {
-  //   this.setState({
-  //     isTouch: false,
-  //   })
-  // }
+  _handlePanResponderEnd(e, gestureState){
+
+    let canTouchLength = this._containerWidth - this._touchBlockWidth
+
+    
+
+    // 偏移
+    // gestureState.moveX有移动才会有值，点击的话值为0
+    let moveDistance = gestureState.moveX !== 0 ? gestureState.moveX - gestureState.x0 : 0;
+    
+    
+    // 确定移动方向
+    const toRight = moveDistance>0 ? true : false;
+
+    // 取移动距离
+    moveDistance = Math.abs(moveDistance)
+    
+    // 设定个中间值决定滑块最终移向哪边
+    const middleValue = canTouchLength / 2
+
+    // endValue是有累加性的，即新动画始终从当前位置计算
+    // 所以，向右移动时，中点以前为0，过了中点为最大值
+    // 再向左移动时，中点以前为0（即不移动），过了中点为最大值的反向
+    let endValue = 0
+
+    // 防止还是能拖出边界，给第二个条件加上 this._blockInLeft 的判断      
+    if ( (this._blockInLeft && moveDistance === 0) || (toRight && this._blockInLeft && (moveDistance > middleValue)) ) {
+      endValue = canTouchLength
+      this._blockInLeft = false
+    } else if ( (!this._blockInLeft && moveDistance === 0) || (!toRight && !this._blockInLeft && (moveDistance > middleValue)) ) {
+      endValue = -canTouchLength
+      this._blockInLeft = true
+    }
+    // console.log(moveDistance);
+
+    // console.log(middleValue);
+    
+
+    // console.log(toRight);
+    
+    // console.log(endValue);
+    
+    
+    Animated.spring(this._animatedValue, {
+      toValue: endValue,
+      tension: 80
+    }).start();
+  }
+
 
   render() {
     const data = this.props.data;
@@ -111,10 +139,12 @@ class CardBlock extends Component {
             style={[
               styles.touchContainer,
               {
-                left: this.state.left,
+                transform: [
+                  {translateX: this._animatedValue.x}
+                ],
               }
               ]}
-            onLayout={ (e) => {this._touchBlockInfo = e.nativeEvent.layout} }
+            onLayout={ (e) => {this._touchBlockWidth = e.nativeEvent.layout.width} }
             {...this._panResponder.panHandlers}
           >
             <Image
@@ -163,20 +193,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(37, 108, 136)',
     marginBottom: 20,
     borderRadius: 50,
+    borderWidth: 2,
+    borderColor: 'red',
     flexDirection: 'row',
+
   },
   touch: {
   },
   touchContainer: {
     flex: 1.3,
     position: 'relative',
-    zIndex: 100,
     backgroundColor: 'rgb(90, 180, 215)',
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    elevation: 2
+    elevation: 2,
+    zIndex: 100,
     // shadowColor: 'black',
     // shadowRadius: 2,
     // shadowOpacity: 1,
