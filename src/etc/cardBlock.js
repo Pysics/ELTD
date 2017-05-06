@@ -72,9 +72,9 @@ class CardBlock extends Component {
     return true;
   }
   _handlePanResponderGrant(e, gestureState){
-    // this.setState({
-    //   isTouch: true
-    // })
+    this.setState({
+      isTouch: true
+    })
     this._animatedValue.setOffset({x: this._value.x});
     this._animatedValue.setValue({x: 0});
   }
@@ -134,6 +134,10 @@ class CardBlock extends Component {
     
     this._startAnimation(endValue);
 
+    this.setState({
+      isTouch:  false
+    })
+
   }
 
   _startAnimation(endValue) {
@@ -142,7 +146,7 @@ class CardBlock extends Component {
       tension: 80
     }).start(
       () => {
-        // 回掉没有用
+        // 回调没有用
       }
     );
   }
@@ -183,6 +187,61 @@ class CardBlock extends Component {
       )
       // i%2 === 0 ? dashContainer.push(<View style={styles.dashBlock} />) : dashContainer.push(<View />)
     }
+
+
+    let touchElement = (
+      <Animated.View
+        style={[
+          styles.touchContainer,
+          {
+            transform: [
+              {translateX: this._animatedValue.x}
+            ],
+            backgroundColor: touchColor[idx].bc,
+            opacity: this.state.isTouch ? 0.7 : 1
+          }
+          ]}
+        onLayout={ (e) => {this._touchBlockWidth = e.nativeEvent.layout.width} }
+        {...this._panResponder.panHandlers}
+      >
+        <Image
+          source={require('./imgs/car.png')}
+          style={styles.car}
+        />
+        <View style={styles.titleWrap}>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.summary_all}>{data.summary_all}元</Text>
+        </View>
+        {/*touchContainer end*/}
+      </Animated.View>
+    )
+
+    let cardElement = (
+      <View style={[styles.cardInfo, {opacity: this.state.isTouch ? 0 : 1, marginLeft: this.state.blockInLeft ? 0 : '-30%'}]}>
+        <View style={styles.cardInfoTop}>
+          <View style={styles.descTitlewrap}>
+            <Text style={styles.descTitle}>{ds.desc}</Text>
+          </View>
+          <View style={styles.cardSummaryWrap}>
+            <Text style={styles.cardSummary}>共{ds.cards.length}张</Text>
+            <Text style={[styles.cardSummary, styles.cardSummaryMoney]}>共消费{ds.summary_each}元</Text>
+          </View>
+          {/*cardInfoTop end*/}
+        </View>
+        <View style={styles.cardInfoDivision}>
+          {
+            dashContainer
+          }
+          <Animated.View style={{ width: this._animatedDivisionValue}}></Animated.View>
+          {/*cardInfoDivision end*/}
+        </View>
+        <View style={styles.cardInfoBottom}>
+          <Text>{ds.cards[0].card1}</Text>
+          {/*cardInfoBottom end*/}
+        </View>
+        {/*cardInfo end*/}
+      </View>
+  )
     
     return (
       <View
@@ -194,55 +253,17 @@ class CardBlock extends Component {
           onPressIn={this._touchIn.bind(this)}
           onPressOut={this._touchOut.bind(this)}
         >*/}
-          <Animated.View
-            style={[
-              styles.touchContainer,
-              {
-                transform: [
-                  {translateX: this._animatedValue.x}
-                ],
-                backgroundColor: touchColor[idx].bc,
-              }
-              ]}
-            onLayout={ (e) => {this._touchBlockWidth = e.nativeEvent.layout.width} }
-            {...this._panResponder.panHandlers}
-          >
-            <Image
-              source={require('./imgs/car.png')}
-              style={styles.car}
-            />
-            <View style={styles.titleWrap}>
-              <Text style={styles.title}>{data.title}</Text>
-              <Text style={styles.summary_all}>{data.summary_all}元</Text>
-            </View>
-            {/*touchContainer end*/}
-          </Animated.View>
+          
         {/*</TouchableOpacity>*/}
+        {/*{ this.state.blockInLeft ?
+          <View style={styles.elementWrap}>{touchElement}{cardElement}</View>
+          :
+          <View style={styles.elementWrap}>{cardElement}{touchElement}</View>
+        }*/}
 
-        <View style={[styles.cardInfo, {opacity: this.state.isTouch ? 0 : 1}]}>
-          <View style={styles.cardInfoTop}>
-            <View style={styles.descTitlewrap}>
-              <Text style={styles.descTitle}>{ds.desc}</Text>
-            </View>
-            <View style={styles.cardSummaryWrap}>
-              <Text style={styles.cardSummary}>共{ds.cards.length}张</Text>
-              <Text style={[styles.cardSummary, styles.cardSummaryMoney]}>共消费{ds.summary_each}元</Text>
-            </View>
-            {/*cardInfoTop end*/}
-          </View>
-          <View style={styles.cardInfoDivision}>
-            {
-              dashContainer
-            }
-            <Animated.View style={{ width: this._animatedDivisionValue}}></Animated.View>
-            {/*cardInfoDivision end*/}
-          </View>
-          <View style={styles.cardInfoBottom}>
-            <Text>{ds.cards[0].card1}</Text>
-            {/*cardInfoBottom end*/}
-          </View>
-          {/*cardInfo end*/}
-        </View>
+        {touchElement}
+        {cardElement}
+
         
         {/*container end*/}
       </View>
@@ -257,11 +278,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 50,
     flexDirection: 'row',
-    
+  },
+  elementWrap: {
   },
   touchContainer: {
-    flex: 1.3,
-    // width: 120,
+    // flex: 1.3,
+    width: '30%',
     position: 'relative',
     borderRadius: 50,
     justifyContent: 'center',
@@ -293,8 +315,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardInfo: {
-    flex: 3,
-    // width: 900,
+    // flex: 3,
+    width: '70%',
   },
   cardInfoTop: {
     flexDirection: 'row',
