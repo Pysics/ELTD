@@ -25,10 +25,15 @@ class ETCScreen extends React.Component {
     // console.log(this.props);
     
   }
-  
+
+  _handleCardInfo(idx) {
+    const { navigate } = this.props.navigation;
+    navigate('ETCBlock'+(idx+1), {navRightIcon: 'search'})
+  }
 
   render() {
     const { hasData, data } = this.props;
+    
 
     return (
         <View style={styles.body}>
@@ -55,7 +60,8 @@ class ETCScreen extends React.Component {
                     data={item}
                     key={idx}
                     idx={idx}
-                    style={styles.card}  
+                    handleCardInfo={this._handleCardInfo.bind(this, idx)}
+                    style={styles.card}
                   />
                 )}
               </View>

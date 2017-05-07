@@ -6,10 +6,16 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 class NavRight extends Component {
   render() {
+    const icon = this.props.navRightIcon
+    
     return (
         <View style={styles.headerRightContainer}>
           <TouchableWithoutFeedback>
-            <Icon name="commenting-o" size={27} color="#333" />
+            { icon==='message' ? 
+              <Icon name="commenting-o" size={27} color="#333" />
+              :
+              <Icon name="search" size={27} color="#333" />
+            }
           </TouchableWithoutFeedback>
         </View>
     );

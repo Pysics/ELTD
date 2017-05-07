@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, PanResponder, Animated } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Image, PanResponder, Animated, TouchableWithoutFeedback } from 'react-native'
 
 
 const touchColor = [
@@ -218,27 +218,33 @@ class CardBlock extends Component {
 
     let cardElement = (
       <View style={[styles.cardInfo, {opacity: this.state.isTouch ? 0 : 1, marginLeft: this.state.blockInLeft ? 0 : '-30%'}]}>
-        <View style={styles.cardInfoTop}>
-          <View style={styles.descTitlewrap}>
-            <Text style={styles.descTitle}>{ds.desc}</Text>
+        <TouchableWithoutFeedback
+          onPress={this.props.handleCardInfo}
+        >
+          <View>
+            <View style={styles.cardInfoTop}>
+              <View style={styles.descTitlewrap}>
+                <Text style={styles.descTitle}>{ds.desc}</Text>
+              </View>
+              <View style={styles.cardSummaryWrap}>
+                <Text style={styles.cardSummary}>共{ds.cards.length}张</Text>
+                <Text style={[styles.cardSummary, styles.cardSummaryMoney]}>共消费{ds.summary_each}元</Text>
+              </View>
+              {/*cardInfoTop end*/}
+            </View>
+            <View style={styles.cardInfoDivision}>
+              {
+                dashContainer
+              }
+              <Animated.View style={{ width: this._animatedDivisionValue}}></Animated.View>
+              {/*cardInfoDivision end*/}
+            </View>
+            <View style={styles.cardInfoBottom}>
+              <Text>{ds.cards[0].card1}</Text>
+              {/*cardInfoBottom end*/}
+            </View>
           </View>
-          <View style={styles.cardSummaryWrap}>
-            <Text style={styles.cardSummary}>共{ds.cards.length}张</Text>
-            <Text style={[styles.cardSummary, styles.cardSummaryMoney]}>共消费{ds.summary_each}元</Text>
-          </View>
-          {/*cardInfoTop end*/}
-        </View>
-        <View style={styles.cardInfoDivision}>
-          {
-            dashContainer
-          }
-          <Animated.View style={{ width: this._animatedDivisionValue}}></Animated.View>
-          {/*cardInfoDivision end*/}
-        </View>
-        <View style={styles.cardInfoBottom}>
-          <Text>{ds.cards[0].card1}</Text>
-          {/*cardInfoBottom end*/}
-        </View>
+        </TouchableWithoutFeedback>
         {/*cardInfo end*/}
       </View>
   )
