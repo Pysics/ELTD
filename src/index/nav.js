@@ -6,8 +6,9 @@ import { StackNavigator } from 'react-navigation'
 
 import { Text } from 'react-native'
 
-import ETCScreen from '../etc/index'
-import HomeScreen from '../home/index'
+import ETCScreen from '../pages/etc/index'
+import HomeScreen from '../pages/home/index'
+import LoginScreen from '../pages/login/index'
 
 import NavRight from './navRight'
 
@@ -18,6 +19,9 @@ export default StackNavigator(
     },
     ETC: {
       screen: ETCScreen,
+    },
+    Login: {
+      screen: LoginScreen
     }
   },
   {

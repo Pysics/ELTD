@@ -12,7 +12,7 @@ import rootSaga from '../sagas/requestETCData'
 const sagaMiddleware = createSagaMiddleware()
 
 // Navigation
-import NavBar from '../index/navbar'
+import Nav from '../index/nav'
 
 import ETCDataState from '../reducers/ETCDataState'
 
@@ -24,7 +24,7 @@ import ETCDataState from '../reducers/ETCDataState'
 
 const store = createStore(
   combineReducers({
-    navBar: (state,action) => NavBar.router.getStateForAction(action, state),
+    nav: (state,action) => Nav.router.getStateForAction(action, state),
     ETCDataState
   }),
   applyMiddleware(sagaMiddleware, logger)

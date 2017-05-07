@@ -9,12 +9,12 @@ import { addNavigationHelpers } from 'react-navigation'
 //Redux
 import { connect } from 'react-redux'
 
-import NavBar from './navbar'
+import Nav from './nav'
 
 const mapStateToProps = (state) => {
   // console.log(state);
   return {
-    navigationState: state.navBar
+    navigationState: state.nav
   }
 }
 
@@ -23,7 +23,7 @@ class Index extends React.Component {
   render(){
     const { dispatch, navigationState } = this.props
     return (
-      <NavBar
+      <Nav
         navigation={
           addNavigationHelpers({
             dispatch: dispatch,
