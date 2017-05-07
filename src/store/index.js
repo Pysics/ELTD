@@ -6,7 +6,7 @@ import logger from 'redux-logger'
 
 import createSagaMiddleware from 'redux-saga'
 
-import rootSaga from '../sagas/requestETCData'
+import rootSaga from '../sagas/index'
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware()
@@ -15,6 +15,8 @@ const sagaMiddleware = createSagaMiddleware()
 import Nav from '../index/nav'
 
 import ETCDataState from '../reducers/ETCDataState'
+
+import LoginAuth from '../reducers/loginAuth'
 
 
 // Middleware
@@ -25,7 +27,8 @@ import ETCDataState from '../reducers/ETCDataState'
 const store = createStore(
   combineReducers({
     nav: (state,action) => Nav.router.getStateForAction(action, state),
-    ETCDataState
+    ETCDataState,
+    LoginAuth
   }),
   applyMiddleware(sagaMiddleware, logger)
 )

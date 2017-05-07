@@ -5,11 +5,13 @@ import React from 'react';
 
 import { View, Button, TouchableWithoutFeedback, StyleSheet, Image, Text } from 'react-native';
 
+import {connect} from 'react-redux'
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const myIcon = <Icon name="rocket" size={30} color="#900" />;
 
-export default class MyHomeScreen extends React.Component {
+class MyHomeScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -19,6 +21,8 @@ export default class MyHomeScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+
+    const { isLogin } = this.props;
     
     return (
       <View style={styles.body}>
@@ -41,7 +45,7 @@ export default class MyHomeScreen extends React.Component {
               style={styles.bottomImg}
           />
           <TouchableWithoutFeedback
-            onPress = { () => navigate('ETC', {pageTitle: 'ETC'}) }
+            onPress = { isLogin ? (() => navigate('ETC', {pageTitle: 'ETC'})) : (() => navigate('Login', {pageTitle: '登录'})) }
           >
             <View
               style={styles.etc}
@@ -54,6 +58,7 @@ export default class MyHomeScreen extends React.Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   body: {
@@ -83,3 +88,11 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   }
 });
+
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.LoginAuth.isLogin,
+  };
+};
+
+export default connect(mapStateToProps)(MyHomeScreen)
