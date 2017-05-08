@@ -1,6 +1,6 @@
 'use strict'
 
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import * as types from '../actions/actionTypes'
 import fetchUrl from '../constants/fetchUrl'
@@ -42,32 +42,37 @@ function fetchFailure() {
 //   .done()
 // }
 
-const fetchAPI = {
-  fetchETC () {
-    // fetchUrl.etc而不是feychUrl
-    return fetch(fetchUrl.etc)
-    .then(response => response.json())
-    .then(data => {
-      return data
-     })
-    .catch(error => error)
-  }
-}
+// const fetchAPI = {
+//   fetchETC (url) {
+//     // fetchUrl.etc而不是feychUrl
+//     return fetch(url)
+//     .then(response => response.json())
+//     .then(data => {
+//       return data
+//      })
+//     .catch(error => error)
+//   }
+// }
 
 // 能运行
-// function fetchAnotherWay() {
-//   return fetch(fetchUrl.etc)
-//   .then(res => (
-//     res.json()
-//   ))
-//   .then(resJson => (
-//     resJson
-//   ))
-// }
+function fetchAPI(url) {
+  return fetch(url)
+  .then(res => (
+    res.json()
+  ))
+  .then(resJson => (
+    resJson
+  ))
+  .catch(err => {
+    console.log(err.message);
+  })
+  // .done()
+}
+
 
 function* fetchUser() {
   try {
-    const response = yield call( fetchAPI.fetchETC );
+    const response = yield call( fetchAPI, fetchUrl.etc );
     // 或者
     // const response = yield call( fetch, fetchUrl );
 
@@ -147,9 +152,43 @@ function* loginAuthTask(loginData) {
 }
 
 
+// ================= fetch message
+
+function requestMessage() {
+  return {
+    type: types.FETCH_MESSAGE_REQUEST
+  }
+}
+
+function receiveMessage(json) {
+  return {
+    type: types.FETCH_MESSAGE_SUCCESS,
+    data: json,
+    // fetchTime: new Data().toLocaleString()
+  }
+}
+
+function fetchMessageFailure() {
+  return {
+    type: types.FETCH_MESSAGE_FAILURE
+  }
+}
+
+function* fetchMessage() {
+  try {
+    const response = yield call( fetchAPI, fetchUrl.message );
+    yield put( receiveMessage(response) );
+  } catch (error) {
+    yield put(fetchMessageFailure());
+  }
+}
+
+
 export default function* event() {
   // etc
   yield takeEvery(types.FETCH_ETC_DATA_REQUEST, fetchUser);
   // login
   yield takeEvery(types.LOGIN_AUTH_REQUEST, loginAuthTask);
+  // message
+  yield takeLatest(types.FETCH_MESSAGE_REQUEST, fetchMessage);
 }

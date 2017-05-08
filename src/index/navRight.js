@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { View, TouchableWithoutFeedback, StyleSheet, Text } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 class NavRight extends Component {
+  
   render() {
     const icon = this.props.navRightIcon
     let element = null
@@ -19,6 +21,11 @@ class NavRight extends Component {
     
     return (
         <View style={styles.headerRightContainer}>
+          { this.props.hasMessage ?
+            <View style={styles.newMessage}></View>
+            :
+            <View />
+          }
           <TouchableWithoutFeedback>
             {/*{ icon==='message' ? 
               <Icon name="commenting-o" size={27} color="#333" />
@@ -36,8 +43,22 @@ const styles = StyleSheet.create({
   headerRightContainer: {
     // borderWidth: 1,
     // borderColor: 'blue',
-    paddingRight: 10,
+    marginRight: 10,
   },
+  newMessage: {
+    width: 7,
+    height: 7,
+    backgroundColor: 'red',
+    borderRadius:  50,
+    position: 'absolute',
+    left: 0,
+  }
 })
 
-export default NavRight;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    hasMessage: state.FetchMessage.hasMessage
+  }
+}
+
+export default connect(mapStateToProps)(NavRight);

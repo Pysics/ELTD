@@ -19,10 +19,26 @@ class MyHomeScreen extends React.Component {
     };
   }
 
+  constructor(props) {
+    super(props);
+    this._fetchMessages = this._fetchMessages.bind(this);
+  }
+
+  
+  _fetchMessages() {
+    this.props.dispatch({type: 'FETCH_MESSAGE_REQUEST'})
+  }
+
   render() {
     const { navigate } = this.props.navigation;
-
     const { isLogin } = this.props;
+    
+    // 避免重复调用
+    if (isLogin && !this.props.messages) {
+      
+    // 抓取通知消息
+      this._fetchMessages();
+    }
     
     return (
       <View style={styles.body}>
@@ -92,6 +108,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     isLogin: state.LoginAuth.isLogin,
+    messages: state.FetchMessage.data,
+    hasMessage: state.FetchMessage.hasMessage
   };
 };
 

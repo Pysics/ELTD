@@ -15,8 +15,8 @@ const sagaMiddleware = createSagaMiddleware()
 import Nav from '../index/nav'
 
 import ETCDataState from '../reducers/ETCDataState'
-
 import LoginAuth from '../reducers/loginAuth'
+import FetchMessage from '../reducers/fetchMessage'
 
 
 // Middleware
@@ -28,7 +28,8 @@ const store = createStore(
   combineReducers({
     nav: (state,action) => Nav.router.getStateForAction(action, state),
     ETCDataState,
-    LoginAuth
+    LoginAuth,
+    FetchMessage
   }),
   applyMiddleware(sagaMiddleware, logger)
 )
