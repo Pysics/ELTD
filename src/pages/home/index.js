@@ -45,7 +45,7 @@ class MyHomeScreen extends React.Component {
               style={styles.bottomImg}
           />
           <TouchableWithoutFeedback
-            onPress = { isLogin ? (() => navigate('ETC', {pageTitle: 'ETC'})) : (() => navigate('Login', {pageTitle: '登录'})) }
+            onPress = { isLogin ? (() => navigate('ETC', {pageTitle: 'ETC'})) : (() => navigate('Login', {pageTitle: '登录', navRightIcon: null})) }
           >
             <View
               style={styles.etc}

@@ -10,6 +10,7 @@ import ETCScreen from '../pages/etc/index'
   import ETCBlock1 from '../pages/etc/block1/index'
 import HomeScreen from '../pages/home/index'
 import LoginScreen from '../pages/login/index'
+import SignupScreen from '../pages/signup/index'
 
 
 import NavRight from './navRight'
@@ -24,6 +25,9 @@ export default StackNavigator(
     },
     Login: {
       screen: LoginScreen
+    },
+    Signup: {
+      screen: SignupScreen
     },
     ETCBlock1: {
       screen: ETCBlock1
