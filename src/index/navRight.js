@@ -6,6 +6,15 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 class NavRight extends Component {
+
+  _handleRightIconClick() {
+    const icon = this.props.navRightIcon
+    if (!this.props.hasMessage) {
+      this.props.navigation.navigate('Login', {navRightIcon: null})
+    } else if (icon === 'message') {
+      this.props.navigation.navigate('Message', {navRightIcon: null})
+    }
+  }
   
   render() {
     const icon = this.props.navRightIcon
@@ -21,12 +30,14 @@ class NavRight extends Component {
     
     return (
         <View style={styles.headerRightContainer}>
-          { this.props.hasMessage ?
+          { this.props.hasMessage && icon === 'message' ?
             <View style={styles.newMessage}></View>
             :
             <View />
           }
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={this._handleRightIconClick.bind(this)}
+          >
             {/*{ icon==='message' ? 
               <Icon name="commenting-o" size={27} color="#333" />
               :

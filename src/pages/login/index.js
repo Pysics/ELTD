@@ -7,6 +7,12 @@ import { connect } from 'react-redux'
 
 
 class Login extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: '登陆',
+    };
+  }
+
   constructor(props) {
     super(props);
 

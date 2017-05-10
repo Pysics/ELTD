@@ -11,6 +11,7 @@ import ETCScreen from '../pages/etc/index'
 import HomeScreen from '../pages/home/index'
 import LoginScreen from '../pages/login/index'
 import SignupScreen from '../pages/signup/index'
+import MessageScreen from '../pages/message/index'
 
 
 import NavRight from './navRight'
@@ -29,11 +30,15 @@ export default StackNavigator(
     Signup: {
       screen: SignupScreen
     },
+    Message: {
+      screen: MessageScreen
+    },
     ETCBlock1: {
       screen: ETCBlock1
-    }
+    },
   },
   {
+    initialRouteName: 'Home',
     // headerMode: 'none',
     navigationOptions: (navigation) => {
       // const { pageTitle } = navigation.navigation.state.params || null
@@ -61,7 +66,7 @@ export default StackNavigator(
       // console.log(params)
       return {
         title: (params !== undefined && params.pageTitle !== undefined) ? params.pageTitle : '易路通达',
-        headerRight: <NavRight navRightIcon={(params !== undefined && params.navRightIcon !== undefined) ? params.navRightIcon : 'message'} />,
+        headerRight: <NavRight navigation={navigation.navigation} navRightIcon={(params !== undefined && params.navRightIcon !== undefined) ? params.navRightIcon : 'message'} />,
         // title: params.pageTitle,
         // headerRight: <NavRight navRightIcon={params.navRightIcon} />,
         headerTitleStyle: {
