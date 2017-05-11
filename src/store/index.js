@@ -26,7 +26,8 @@ import FetchMessage from '../reducers/fetchMessage'
 
 const store = createStore(
   combineReducers({
-    nav: (state,action) => Nav.router.getStateForAction(action, state),
+    // 使用抽屉导航时返回一个state
+    nav: (state,action) => Nav.router.getStateForAction(action, state) || state,
     ETCDataState,
     LoginAuth,
     FetchMessage

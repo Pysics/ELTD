@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { StackNavigator } from 'react-navigation'
+import { StackNavigator, DrawerNavigator } from 'react-navigation'
 
 import { Text } from 'react-native'
 
@@ -15,8 +15,10 @@ import MessageScreen from '../pages/message/index'
 
 
 import NavRight from './navRight'
+import NavLeft from './navLeft'
+import DrawerContent from './drawerContent'
 
-export default StackNavigator(
+const IndexNavigator =  StackNavigator(
   {
     Home: {
       screen: HomeScreen,
@@ -62,10 +64,10 @@ export default StackNavigator(
       //   params.navRightIcon === 'message'
       // }
       
-      
       // console.log(params)
       return {
         title: (params !== undefined && params.pageTitle !== undefined) ? params.pageTitle : '易路通达',
+        headerLeft: <NavLeft navigation={navigation.navigation} />,
         headerRight: <NavRight navigation={navigation.navigation} navRightIcon={(params !== undefined && params.navRightIcon !== undefined) ? params.navRightIcon : 'message'} />,
         // title: params.pageTitle,
         // headerRight: <NavRight navRightIcon={params.navRightIcon} />,
@@ -75,5 +77,15 @@ export default StackNavigator(
       }
     }
   }
-);
+);  
 
+export default DrawerNavigator({
+  Index: {
+    screen: IndexNavigator
+  },
+  Other: {
+    screen: MessageScreen
+  }
+}, {
+  contentComponent: (props) => <DrawerContent {...props} />
+})
